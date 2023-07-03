@@ -100,7 +100,7 @@ const displaySummary = function (movements) {
     .filter(mov => mov > 0)
     .map(deposit => (deposit * account1.interestRate) / 100)
     .filter((int, i, arr) => {
-      console.log(arr);
+      // console.log(arr);
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
@@ -127,6 +127,14 @@ const calcDisplayBalance = function (movements) {
   labelBalance.textContent = `${balance}€`;
 };
 calcDisplayBalance(account1.movements);
+
+//============== Event Handlers ==============
+btnLogin.addEventListener('click', function(e) {
+  // Prevent form from submitting
+  e.preventDefault();
+  console.log('LOGIN');
+})
+
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -244,4 +252,19 @@ const totalDepositsUSD = movements
   // })
   .map(mov => mov * eurToUsd)
   .reduce((acc, mov) => acc + mov, 0);
-console.log(totalDepositsUSD);
+// console.log(totalDepositsUSD);
+
+//============ The Find Method ============
+// The find method loops over the array and gets an element in the array
+// It returns the first element that meets its condition 
+const firstWithdrawal = movements.find(mov => mov< 0);
+console.log(firstWithdrawal);
+console.log(movements);
+
+const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+console.log(account);
+
+for(const acc of accounts) {
+  acc.owner === 'Jessica Davis';
+}
+// console.log(acc);
