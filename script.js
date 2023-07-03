@@ -61,6 +61,45 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+//================== MOVEMENTS ==================
+const displayMovement = function (movements) {
+  containerMovements.innerHTML = ''; //empties html contents that existed before.
+
+  movements.forEach(function (mov, i) {
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
+
+    const html = `
+    <div class="movements__row">
+      <div class="movements__type movements__type--${type}">${
+      i + 1
+    } ${type}</div>
+      <div class="movements__value">${mov}€</div>
+    </div>`;
+
+    // Displays details on the webpage
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+  });
+};
+displayMovement(account1.movements);
+
+//========= Username Creation =========
+
+const createUsernames = function(accs) {
+
+  accs.forEach(acc => {
+   acc.username = acc.owner 
+  .toLowerCase()
+  .split(' ')
+  .map(name => name[0])
+  .join('');
+  })
+}
+createUsernames(accounts);
+console.log(accounts);
+
+
+
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -71,15 +110,13 @@ const currencies = new Map([
   ['GBP', 'Pound sterling'],
 ]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
 /////////////////////////////////////////////////
 
 //========== ARRAY METHODS ==========
 
 // let arr = ['a', 'b', 'c', 'd', 'e'];
 
-// SLICE 
+// SLICE
 
 // console.log(arr.slice(2));
 // console.log(arr.slice(1,4));
@@ -87,7 +124,7 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // console.log(arr.slice()); //duplicates the array
 // console.log([...arr]);
 
-// SPLICE 
+// SPLICE
 // console.log(arr.splice(2));
 // arr.splice(-1);
 // console.log(arr);
@@ -97,7 +134,7 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // const arr2 = ['j', 'i', 'h', 'g', 'f'];
 // console.log(arr2.reverse());
 // console.log(arr2);
- 
+
 // CONCAT
 // const letters = arr.concat(arr2);
 // console.log(letters);
@@ -108,14 +145,39 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 //=========== AT METHOD ===========
 
-const arr = [67, 84, 42];
-console.log(arr[0]);
-console.log(arr.at(0));
+// const arr = [67, 84, 42];
+// console.log(arr[0]);
+// console.log(arr.at(0));
 
-// Getting last array element 
-console.log(arr[arr.length - 1]);
-console.log(arr.slice(-1)[0]);
-console.log(arr.at(-1));
+// Getting last array element
+// console.log(arr[arr.length - 1]);
+// console.log(arr.slice(-1)[0]);
+// console.log(arr.at(-1));
 
-console.log('Jonas'.at(0));
-console.log('Jonas'.at(-1));
+// console.log('Jonas'.at(0));
+// console.log('Jonas'.at(-1));
+
+//========== Data Transformation (Map, Reduce, Filter) ==========
+
+//======= Map Method =======
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// const eurToUsd = 1.1;
+
+// const movementUsd = movements.map(mov => mov * eurToUsd );
+// console.log(movements);
+// console.log(movementUsd);
+
+const movementDescription = movements.map(
+  (mov, i, arr) =>
+    `Movement ${i + 1}: You ${mov > 0 ? 'deposited' : 'withdrew'} ${Math.abs(
+      mov
+    )}`
+);
+console.log(movementDescription);
+
+// const totalMovement = function(acc) {
+//    accs.forEach(movements.map(acc))
+// }
+
+// totalMovement(account1.movements);
