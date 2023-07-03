@@ -67,7 +67,6 @@ const displayMovement = function (movements) {
 
   movements.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
-
     const html = `
     <div class="movements__row">
       <div class="movements__type movements__type--${type}">${
@@ -75,30 +74,59 @@ const displayMovement = function (movements) {
     } ${type}</div>
       <div class="movements__value">${mov}€</div>
     </div>`;
-
     // Displays details on the webpage
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
 displayMovement(account1.movements);
 
-//========= Username Creation =========
+//=========== Summary Amount===========
+const displaySummary = function (movements) {
 
-const createUsernames = function(accs) {
+//  incomes
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incomes}€`;
 
+  // Outgoings
+  const outgoing = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(outgoing)}€`;
+
+  // Interest 
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * account1.interestRate) / 100)
+    .filter((int, i, arr) => {
+      console.log(arr);
+      return int >= 1;
+    })
+    .reduce((acc, int) => acc + int, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+displaySummary(account1.movements);
+
+//========= Username Creation ==========
+const createUsernames = function (accs) {
   accs.forEach(acc => {
-   acc.username = acc.owner 
-  .toLowerCase()
-  .split(' ')
-  .map(name => name[0])
-  .join('');
-  })
-}
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
 createUsernames(accounts);
-console.log(accounts);
+// console.log(accounts);
 
-
-
+//========= Calculate balance =========
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${balance}€`;
+};
+calcDisplayBalance(account1.movements);
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -158,12 +186,12 @@ const currencies = new Map([
 // console.log('Jonas'.at(-1));
 
 //========== Data Transformation (Map, Reduce, Filter) ==========
-
 //======= Map Method =======
+// Map method is used to carry out functions/transactions and give out output in a new array
+
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 // const eurToUsd = 1.1;
-
 // const movementUsd = movements.map(mov => mov * eurToUsd );
 // console.log(movements);
 // console.log(movementUsd);
@@ -174,10 +202,46 @@ const movementDescription = movements.map(
       mov
     )}`
 );
-console.log(movementDescription);
+// console.log(movementDescription);
 
 // const totalMovement = function(acc) {
 //    accs.forEach(movements.map(acc))
 // }
-
 // totalMovement(account1.movements);
+
+//========= Filter Method =========
+// Filter method is used to set conditions and filter what is and isn't needed.
+const deposits = movements.filter(mov => mov > 0);
+// console.log(movements);
+// console.log(deposits);
+
+const withdrawals = movements.filter(mov => mov < 0);
+// console.log(withdrawals);
+
+//========= Reduce method =========
+// Reduce method compiles all the element values into one
+
+// Accumulator is used to add them all together and produce balance
+// const balance = movements.reduce((acc, cur) => acc + cur, 0); // 0 means the acc starts from 0
+// console.log(balance);
+
+// Maximum Vaue using Reduce Method
+const max = movements.reduce((acc, mov) => {
+  if (acc > mov) return acc;
+  else return mov;
+}, movements[0]);
+// console.log(max);
+
+// NOTE: FILTER and MAP returns an Array, while REDUCE returns a value
+
+//========== Chaining Method ==========
+const eurToUsd = 1.1;
+const totalDepositsUSD = movements
+  .filter(mov => mov > 0) //how to check for bugs in the chaining methods;
+  // .map((mov, i, arr) => { //You check it in the next method that's being executed;
+  //  console.log(arr);
+  // return mov * eurToUsd
+  // })
+  .map(mov => mov * eurToUsd)
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(totalDepositsUSD);
