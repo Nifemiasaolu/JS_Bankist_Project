@@ -129,10 +129,20 @@ const calcDisplayBalance = function (movements) {
 calcDisplayBalance(account1.movements);
 
 //============== Event Handlers ==============
+let currentAccount;
+
+// Login Settings 
 btnLogin.addEventListener('click', function(e) {
   // Prevent form from submitting
   e.preventDefault();
-  console.log('LOGIN');
+
+  currentAccount = accounts.find(acc => acc.username === inputLoginUsername.value);
+  console.log(currentAccount);
+
+  // Pin Setup 
+  if(currentAccount.pin === Number(inputLoginPin.value)){
+    console.log('LOGIN');
+  }
 })
 
 
