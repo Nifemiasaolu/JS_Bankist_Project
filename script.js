@@ -128,7 +128,7 @@ const calcDisplayBalance = function (movements) {
 };
 calcDisplayBalance(account1.movements);
 
-//============== Event Handlers ===============
+//============== Event Handlers ==============
 let currentAccount;
 
 // Login Settings 
