@@ -47,6 +47,7 @@ const labelTimer = document.querySelector('.timer');
 const containerApp = document.querySelector('.app');
 const containerMovements = document.querySelector('.movements');
 
+const displayErrorMessage = document.querySelector('.display-error');
 const btnLogin = document.querySelector('.login__btn');
 const btnTransfer = document.querySelector('.form__btn--transfer');
 const btnLoan = document.querySelector('.form__btn--loan');
@@ -78,37 +79,39 @@ const displayMovement = function (movements) {
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
-displayMovement(account1.movements);
 
-//=========== Summary Amount===========
-const displaySummary = function (movements) {
-
-//  incomes
-  const incomes = movements
+//===================== Summary Amount=====================
+const displaySummary = function (acc) {
+  //  incomes
+  const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumIn.textContent = `${incomes}€`;
 
   // Outgoings
-  const outgoing = movements
+  const outgoing = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumOut.textContent = `${Math.abs(outgoing)}€`;
 
-  // Interest 
-  const interest = movements
+  // Interest Rate
+  const interest = acc.movements
     .filter(mov => mov > 0)
-    .map(deposit => (deposit * account1.interestRate) / 100)
+    .map(deposit => (deposit * acc.interestRate) / 100)
     .filter((int, i, arr) => {
-      // console.log(arr);
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
   labelSumInterest.textContent = `${interest}€`;
 };
-displaySummary(account1.movements);
 
-//========= Username Creation ==========
+//======================= Calculate balance =======================
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${balance}€`;
+};
+
+//====================== Username Creation =======================
 const createUsernames = function (accs) {
   accs.forEach(acc => {
     acc.username = acc.owner
@@ -121,29 +124,53 @@ const createUsernames = function (accs) {
 createUsernames(accounts);
 // console.log(accounts);
 
-//========= Calculate balance =========
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance}€`;
-};
-calcDisplayBalance(account1.movements);
-
-//============== Event Handlers ==============
+///////////////////////////////////////////////////
+//======================= Event Handlers =======================
 let currentAccount;
 
-// Login Settings 
-btnLogin.addEventListener('click', function(e) {
+//============= Login Settings =============
+btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
   e.preventDefault();
 
-  currentAccount = accounts.find(acc => acc.username === inputLoginUsername.value);
-  console.log(currentAccount);
+  currentAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  );
+  // console.log(currentAccount);
 
-  // Pin Setup 
-  if(currentAccount.pin === Number(inputLoginPin.value)){
-    console.log('LOGIN');
+  // Pin Setup
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    //currentAccount?.pin means to check if currentAccount exist first,
+    //if it does, proceed to confirming the pin.
+
+    // Display UI and Welcome Message
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(' ')[0]
+    }`;
+    containerApp.style.opacity = 100;
+    displayErrorMessage.style.display = 'none'
+
+    // Clear input fields
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
+    //Display Movements
+    displayMovement(currentAccount.movements);
+
+    //Display Balance
+    calcDisplayBalance(currentAccount.movements);
+
+    //Display Summary
+    displaySummary(currentAccount);
+  } else {
+    displayErrorMessage.style.display = 'block'
+    const timeout = setTimeout(() => {
+      displayErrorMessage.textContent = `Invalid Username/Password`;
+    }, 100);
+    displayErrorMessage.style.color = 'red';
+    // clearTimeout(timeout);
   }
-})
+});
+
 
 
 /////////////////////////////////////////////////
@@ -266,15 +293,15 @@ const totalDepositsUSD = movements
 
 //============ The Find Method ============
 // The find method loops over the array and gets an element in the array
-// It returns the first element that meets its condition 
-const firstWithdrawal = movements.find(mov => mov< 0);
+// It returns the first element that meets its condition
+const firstWithdrawal = movements.find(mov => mov < 0);
 console.log(firstWithdrawal);
 console.log(movements);
 
 const account = accounts.find(acc => acc.owner === 'Jessica Davis');
 console.log(account);
 
-for(const acc of accounts) {
+for (const acc of accounts) {
   acc.owner === 'Jessica Davis';
 }
 // console.log(acc);
