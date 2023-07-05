@@ -106,9 +106,9 @@ const displaySummary = function (acc) {
 };
 
 //======================= Calculate balance =======================
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance}€`;
+const calcDisplayBalance = function (acc) {
+  acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${acc.balance}€`;
 };
 
 //====================== Username Creation =======================
@@ -124,11 +124,22 @@ const createUsernames = function (accs) {
 createUsernames(accounts);
 // console.log(accounts);
 
+const updateUI = function(acc) {
+   //Display Movements
+   displayMovement(acc.movements);
+
+   //Display Balance
+   calcDisplayBalance(acc);
+
+   //Display Summary
+   displaySummary(acc);
+}
+
 ///////////////////////////////////////////////////
 //======================= Event Handlers =======================
 let currentAccount;
 
-//============= Login Settings =============
+//============= Login Function =============
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
   e.preventDefault();
@@ -148,21 +159,17 @@ btnLogin.addEventListener('click', function (e) {
       currentAccount.owner.split(' ')[0]
     }`;
     containerApp.style.opacity = 100;
-    displayErrorMessage.style.display = 'none'
+    displayErrorMessage.style.display = 'none';
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
-    //Display Movements
-    displayMovement(currentAccount.movements);
+   
+    // Update UI 
+    updateUI(currentAccount);
 
-    //Display Balance
-    calcDisplayBalance(currentAccount.movements);
-
-    //Display Summary
-    displaySummary(currentAccount);
   } else {
-    displayErrorMessage.style.display = 'block'
+    displayErrorMessage.style.display = 'block';
     const timeout = setTimeout(() => {
       displayErrorMessage.textContent = `Invalid Username/Password`;
     }, 100);
@@ -171,7 +178,27 @@ btnLogin.addEventListener('click', function (e) {
   }
 });
 
+//=============== Transfer Function ===============
 
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const amount = Number(inputTransferAmount.value);
+  const receiverAcc = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+    console.log(amount, receiverAcc);
+
+  // Transfer condition 
+  if(amount > 0 && 
+      receiverAcc &&
+      currentAccount.balance >= amount && 
+      receiverAcc?.username !== currentAccount.username) {
+        currentAccount.movements.push(-amount);
+        receiverAcc.movements.push(amount);
+        updateUI(currentAccount);
+    }
+});
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
