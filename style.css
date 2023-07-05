@@ -83,6 +83,11 @@ nav {
   color: #777;
 }
 
+.display-error {
+  text-align: center;
+  display: none;
+}
+
 /* MAIN */
 .app {
   position: relative;
@@ -94,8 +99,8 @@ nav {
   gap: 2rem;
 
   /* NOTE This creates the fade in/out anumation */
-  /* opacity: 0; */
-  transition: all 1s;
+  opacity: 0;
+  transition: all 2s;
 }
 
 .balance {
