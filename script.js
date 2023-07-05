@@ -213,7 +213,7 @@ btnTransfer.addEventListener('click', function (e) {
       transferErrorMessage.style.color = 'green';
     }, 1000);
     
-    // clearTimeout(timeout, 3000);
+    //clearTimeout(timeout, 3000);
 
   } else {
     // Display error message 
