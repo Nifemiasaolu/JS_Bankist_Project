@@ -216,6 +216,7 @@ nav {
   border-radius: 1rem;
   padding: 3rem 4rem;
   color: #333;
+  position: relative;
 }
 
 .operation--transfer {
@@ -242,6 +243,7 @@ h2 {
   grid-template-columns: 2.5fr 2.5fr 1fr;
   grid-template-rows: auto auto;
   gap: 0.4rem 1rem;
+  
 }
 
 /* Exceptions for interst */
@@ -274,6 +276,13 @@ h2 {
 .form__label {
   font-size: 1.3rem;
   text-align: center;
+}
+
+.error__message {
+  position: absolute;
+  bottom: 0;
+  transform: translate(75%, 100%);
+  /* left: 50%; */
 }
 
 .form__btn {
