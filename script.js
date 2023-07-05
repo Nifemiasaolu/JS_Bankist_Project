@@ -47,7 +47,8 @@ const labelTimer = document.querySelector('.timer');
 const containerApp = document.querySelector('.app');
 const containerMovements = document.querySelector('.movements');
 
-const displayErrorMessage = document.querySelector('.display-error');
+const transferErrorMessage = document.querySelector('.error__message');
+const loginErrorMessage = document.querySelector('.display-error');
 const btnLogin = document.querySelector('.login__btn');
 const btnTransfer = document.querySelector('.form__btn--transfer');
 const btnLoan = document.querySelector('.form__btn--loan');
@@ -124,16 +125,16 @@ const createUsernames = function (accs) {
 createUsernames(accounts);
 // console.log(accounts);
 
-const updateUI = function(acc) {
-   //Display Movements
-   displayMovement(acc.movements);
+const updateUI = function (acc) {
+  //Display Movements
+  displayMovement(acc.movements);
 
-   //Display Balance
-   calcDisplayBalance(acc);
+  //Display Balance
+  calcDisplayBalance(acc);
 
-   //Display Summary
-   displaySummary(acc);
-}
+  //Display Summary
+  displaySummary(acc);
+};
 
 ///////////////////////////////////////////////////
 //======================= Event Handlers =======================
@@ -159,21 +160,20 @@ btnLogin.addEventListener('click', function (e) {
       currentAccount.owner.split(' ')[0]
     }`;
     containerApp.style.opacity = 100;
-    displayErrorMessage.style.display = 'none';
+    loginErrorMessage.style.display = 'none';
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
-   
-    // Update UI 
-    updateUI(currentAccount);
 
+    // Update UI
+    updateUI(currentAccount);
   } else {
-    displayErrorMessage.style.display = 'block';
+    loginErrorMessage.style.display = 'block';
     const timeout = setTimeout(() => {
-      displayErrorMessage.textContent = `Invalid Username/Password`;
+      loginErrorMessage.textContent = `Invalid Username/Password`;
     }, 100);
-    displayErrorMessage.style.color = 'red';
+    loginErrorMessage.style.color = 'red';
     // clearTimeout(timeout);
   }
 });
@@ -187,17 +187,40 @@ btnTransfer.addEventListener('click', function (e) {
   const receiverAcc = accounts.find(
     acc => acc.username === inputTransferTo.value
   );
-    console.log(amount, receiverAcc);
+  console.log(amount, receiverAcc);
 
-  // Transfer condition 
-  if(amount > 0 && 
-      receiverAcc &&
-      currentAccount.balance >= amount && 
-      receiverAcc?.username !== currentAccount.username) {
-        currentAccount.movements.push(-amount);
-        receiverAcc.movements.push(amount);
-        updateUI(currentAccount);
-    }
+  // Transfer condition
+  if (
+    amount > 0 &&
+    receiverAcc &&
+    currentAccount.balance >= amount &&
+    receiverAcc?.username !== currentAccount.username
+  ) {
+    // Doing the transfer
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
+
+    // Update UI
+    updateUI(currentAccount);
+
+    // Remove input content 
+    inputTransferTo.value = inputTransferAmount.value = '';
+    inputTransferAmount.blur();
+
+    // transferErrorMessage.style.display = 'none';
+    const timeout = setTimeout(() => {
+      transferErrorMessage.textContent = `Transaction Succesful`;
+      transferErrorMessage.style.color = 'green';
+    }, 1000);
+    
+    // clearTimeout(timeout, 3000);
+
+  } else {
+    // Display error message 
+    transferErrorMessage.style.display = 'block'
+    transferErrorMessage.textContent = `Invalid Transaction`;
+    transferErrorMessage.style.color = 'red';
+  }
 });
 
 /////////////////////////////////////////////////
