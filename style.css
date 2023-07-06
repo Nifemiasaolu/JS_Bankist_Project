@@ -282,7 +282,7 @@ h2 {
   position: absolute;
   bottom: 0;
   transform: translate(75%, 100%);
-  /* left: 60%; */
+  /* left: 0%; */
 }
 
 .form__btn {
