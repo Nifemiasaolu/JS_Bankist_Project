@@ -221,7 +221,23 @@ btnTransfer.addEventListener('click', function (e) {
   }
 });
 
-// Close Account Function
+//================ Loan Function ================
+btnLoan.addEventListener('click', function(e){
+  e.preventDefault();
+  const loanAmount =  Number(inputLoanAmount.value);
+
+  if(loanAmount > 0 && 
+    currentAccount.movements.some(mov => mov >= loanAmount * 0.1)){
+      // Add Movement 
+      currentAccount.movements.push(loanAmount);
+
+      // Update UI 
+      updateUI(currentAccount);
+    }
+    inputLoanAmount.value = '';
+}) 
+
+//================ Close Account Function ================
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -376,3 +392,37 @@ for (const acc of accounts) {
   acc.owner === 'Jessica Davis';
 }
 // console.log(acc);
+
+//=============== Some and Every Method ===============
+
+// console.log(movements);
+
+// EQUALITY
+// console.log(movements.includes(-130));
+
+// SOME: CONDITION 
+const anyDeposits = movements.some(mov => mov > 0);
+// console.log(anyDeposits);
+
+const anyDeposits2 = movements.some(mov => mov > 1500);
+// console.log(anyDeposits2);
+
+// EVERY: CONDITION 
+// console.log(movements.every(mov => mov > 0));
+// console.log(account4.movements.every(mov => mov > 0));
+
+// Seperate Callback
+const deposit5 = mov => mov > 0;
+// console.log(movements.some(deposit5));
+// console.log(movements.filter(deposit5));
+// console.log(movements.every(deposit5));
+
+//============= Flat Method =============
+const arr = [[1,2,3], [4,5,6], [7,8,9]]
+console.log(arr.flat());
+
+const arr2 = [[1,[2,3]], [4,[5,6]], [7,[8,9]]]
+console.log(arr2.flat());
+
+const accountMovements = accounts.map(acc => acc.movements);
+console.log(accountMovements);
