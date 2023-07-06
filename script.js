@@ -166,6 +166,8 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
 
+    transferErrorMessage.style.display = 'none';
+
     // Update UI
     updateUI(currentAccount);
   } else {
@@ -179,7 +181,6 @@ btnLogin.addEventListener('click', function (e) {
 });
 
 //=============== Transfer Function ===============
-
 btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
 
@@ -203,23 +204,44 @@ btnTransfer.addEventListener('click', function (e) {
     // Update UI
     updateUI(currentAccount);
 
-    // Remove input content 
+    // Remove input content
     inputTransferTo.value = inputTransferAmount.value = '';
     inputTransferAmount.blur();
 
-    // transferErrorMessage.style.display = 'none';
-      transferErrorMessage.textContent = `Transaction Succesful`;
-      transferErrorMessage.style.color = 'green';
-    
-    
-    //clearTimeout(timeout, 3000);
+    transferErrorMessage.style.display = 'block';
+    transferErrorMessage.textContent = `Transaction Succesful`;
+    transferErrorMessage.style.color = 'green';
 
+    //clearTimeout(timeout, 3000);
   } else {
-    // Display error message 
-    transferErrorMessage.style.display = 'block'
+    // Display error message
+    transferErrorMessage.style.display = 'block';
     transferErrorMessage.textContent = `Invalid Transaction`;
     transferErrorMessage.style.color = 'red';
   }
+});
+
+// Close Account Function
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+    console.log(index);
+
+    // Delete account
+    accounts.splice(index, 1);
+
+    // Hide UI
+    containerApp.style.opacity = 0;
+  }
+  inputCloseUsername.value = inputClosePin.value = '';
+  inputClosePin.blur();
 });
 
 /////////////////////////////////////////////////
