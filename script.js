@@ -208,10 +208,9 @@ btnTransfer.addEventListener('click', function (e) {
     inputTransferAmount.blur();
 
     // transferErrorMessage.style.display = 'none';
-    const timeout = setTimeout(() => {
       transferErrorMessage.textContent = `Transaction Succesful`;
       transferErrorMessage.style.color = 'green';
-    }, 1000);
+    
     
     //clearTimeout(timeout, 3000);
 
