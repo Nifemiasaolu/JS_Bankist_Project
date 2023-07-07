@@ -417,7 +417,7 @@ const deposit5 = mov => mov > 0;
 // console.log(movements.filter(deposit5));
 // console.log(movements.every(deposit5));
 
-//============= Flat Method ===========
+//============= Flat Method =============
 const arr = [[1,2,3], [4,5,6], [7,8,9]]
 console.log(arr.flat());
 
