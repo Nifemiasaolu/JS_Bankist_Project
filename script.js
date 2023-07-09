@@ -222,20 +222,22 @@ btnTransfer.addEventListener('click', function (e) {
 });
 
 //================ Loan Function ================
-btnLoan.addEventListener('click', function(e){
+btnLoan.addEventListener('click', function (e) {
   e.preventDefault();
-  const loanAmount =  Number(inputLoanAmount.value);
+  const loanAmount = Number(inputLoanAmount.value);
 
-  if(loanAmount > 0 && 
-    currentAccount.movements.some(mov => mov >= loanAmount * 0.1)){
-      // Add Movement 
-      currentAccount.movements.push(loanAmount);
+  if (
+    loanAmount > 0 &&
+    currentAccount.movements.some(mov => mov >= loanAmount * 0.1)
+  ) {
+    // Add Movement
+    currentAccount.movements.push(loanAmount);
 
-      // Update UI 
-      updateUI(currentAccount);
-    }
-    inputLoanAmount.value = '';
-}) 
+    // Update UI
+    updateUI(currentAccount);
+  }
+  inputLoanAmount.value = '';
+});
 
 //================ Close Account Function ================
 btnClose.addEventListener('click', function (e) {
@@ -400,14 +402,14 @@ for (const acc of accounts) {
 // EQUALITY
 // console.log(movements.includes(-130));
 
-// SOME: CONDITION 
+// SOME: CONDITION
 const anyDeposits = movements.some(mov => mov > 0);
 // console.log(anyDeposits);
 
 const anyDeposits2 = movements.some(mov => mov > 1500);
 // console.log(anyDeposits2);
 
-// EVERY: CONDITION 
+// EVERY: CONDITION
 // console.log(movements.every(mov => mov > 0));
 // console.log(account4.movements.every(mov => mov > 0));
 
@@ -418,11 +420,47 @@ const deposit5 = mov => mov > 0;
 // console.log(movements.every(deposit5));
 
 //============= Flat Method ===============
-const arr = [[1,2,3], [4,5,6], [7,8,9]]
+const arr = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+];
 console.log(arr.flat());
 
-const arr2 = [[1,[2,3]], [4,[5,6]], [7,[8,9]]]
+const arr2 = [
+  [1, [2, 3]],
+  [4, [5, 6]],
+  [7, [8, 9]],
+];
 console.log(arr2.flat());
 
-const accountMovements = accounts.map(acc => acc.movements);
-// console.log(accountMovements);
+// Flat
+const overallBalance = accounts
+  .map(acc => acc.movements)
+  .flat()
+  .reduce((acc, cur) => acc + cur, 0);
+console.log(overallBalance);
+
+// FlatMap
+const overallBalance2 = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((acc, cur) => acc + cur, 0);
+console.log(overallBalance2);
+
+// Sorting Method
+// Strings
+const owners = ['Jonas', 'Michael', 'Adam', 'Zach'];
+console.log(owners.sort());
+console.log(owners);
+
+// Numbers
+console.log(movements);
+
+// return < 0, A, B;
+// return > 0, B, A;
+movements.sort((a, b) => {
+  if (a > b) return 1;
+  if (b > a) return -1;
+});
+
+console.log(movements);
