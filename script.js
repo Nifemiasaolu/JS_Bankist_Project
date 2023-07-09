@@ -447,7 +447,7 @@ const overallBalance2 = accounts
   .reduce((acc, cur) => acc + cur, 0);
 console.log(overallBalance2);
 
-//============= Sorting Method =============
+//============= Sorting Method ============
 // Strings
 const owners = ['Jonas', 'Michael', 'Adam', 'Zach'];
 console.log(owners.sort());
