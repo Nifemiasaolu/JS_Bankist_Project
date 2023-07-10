@@ -393,11 +393,11 @@ const totalDepositsUSD = movements
 // The find method loops over the array and gets an element in the array
 // It returns the first element that meets its condition
 const firstWithdrawal = movements.find(mov => mov < 0);
-console.log(firstWithdrawal);
-console.log(movements);
+// console.log(firstWithdrawal);
+// console.log(movements);
 
 const account = accounts.find(acc => acc.owner === 'Jessica Davis');
-console.log(account);
+// console.log(account);
 
 for (const acc of accounts) {
   acc.owner === 'Jessica Davis';
@@ -434,36 +434,36 @@ const arr = [
   [4, 5, 6],
   [7, 8, 9],
 ];
-console.log(arr.flat());
+// console.log(arr.flat());
 
 const arr2 = [
   [1, [2, 3]],
   [4, [5, 6]],
   [7, [8, 9]],
 ];
-console.log(arr2.flat());
+// console.log(arr2.flat());
 
 // Flat
 const overallBalance = accounts
   .map(acc => acc.movements)
   .flat()
   .reduce((acc, cur) => acc + cur, 0);
-console.log(overallBalance);
+// console.log(overallBalance);
 
 // FlatMap
 const overallBalance2 = accounts
   .flatMap(acc => acc.movements)
   .reduce((acc, cur) => acc + cur, 0);
-console.log(overallBalance2);
+// console.log(overallBalance2);
 
 //============= Sorting Method ==============
 // Strings
 const owners = ['Jonas', 'Michael', 'Adam', 'Zach'];
-console.log(owners.sort());
-console.log(owners);
+// console.log(owners.sort());
+// console.log(owners);
 
 // Numbers
-console.log(movements);
+// console.log(movements);
 
 // return < 0, A, B; (keep order)
 // return > 0, B, A; (switch order)
@@ -474,7 +474,7 @@ console.log(movements);
 // });
 // console.log(movements);
 movements.sort((a, b) => a - b);
-console.log(movements);
+// console.log(movements);
 
 // Descending
 // movements.sort((a, b) => {
@@ -483,29 +483,29 @@ console.log(movements);
 // });
 // console.log(movements);
 movements.sort((a, b) => b - a);
-console.log(movements);
+// console.log(movements);
 
 //========= Creating and Filling Arrays =========
 const arr3 = [1, 2, 3, 4, 5, 6, 7];
-console.log(new Array(1, 2, 3, 4, 5, 6, 7));
+// console.log(new Array(1, 2, 3, 4, 5, 6, 7));
 
 // Empty Arrays + Fill Method
 const x = new Array(7);
 x.fill(1);
 x.fill(2, 3, 5);
-console.log(x);
+// console.log(x);
 
 arr3.fill(23, 2, 6);
-console.log(arr3);
+// console.log(arr3);
 
 // To create an array programatically, use array.from method
 // Array.from Method
 
 const y = Array.from({ length: 7 }, () => 2);
-console.log(y);
+// console.log(y);
 
 const z = Array.from({ length: 7 }, (_, i) => i + 1);
-console.log(z);
+// console.log(z);
 
 // 100 dice rolls
 
@@ -513,13 +513,47 @@ const dice = Array.from(
   { length: 100 },
   () => Math.trunc(Math.random() * 6) + 1
 );
-console.log(dice);
+// console.log(dice);
 
-// Converting the generated movements values into an array using Array.from 
+// Converting the generated movements values into an array using Array.from
 labelBalance.addEventListener('click', function () {
   const movementsUI = Array.from(
     document.querySelectorAll('.movements__value'),
     el => Number(el.textContent.replace('€', ''))
   );
-  console.log(movementsUI);
+  // console.log(movementsUI);
 });
+
+// Practice Exercise
+
+const { deposit, withdrawal } = accounts
+  .flatMap(mov => account.movements)
+  .reduce(
+    (sums, cur) => {
+      // cur > 0 ? (sums.deposit += cur) : (sums.withdrawal += cur);
+      sums[cur > 0 ? 'deposit' : 'withdrawal'] += cur;
+      return sums;
+    },
+    { deposit: 0, withdrawal: 0 }
+  );
+console.log(deposit, withdrawal);
+
+// Title Case Capitalisation
+// this is a nice titile => This Is a Nice Title
+
+const convertTitleCase = function (title) {
+  const capitalize = str => str[0].toUpperCase() + str.slice(1)
+  
+  const exceptions = ['a', 'an', 'and', 'but', 'the', 'or', 'on', 'in', 'with'];
+  const titleCase = title
+    .toLowerCase()
+    .split(' ')
+    .map(word => exceptions.includes(word) ? word : capitalize(word))
+    .join(' ');
+    
+  return capitalize(titleCase);
+};
+
+console.log(convertTitleCase('this is a nice title'));
+console.log(convertTitleCase('this is a LONG title, but not too long'));
+console.log(convertTitleCase('and here is another title with an EXAMPLE'));
