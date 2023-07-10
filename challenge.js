@@ -37,7 +37,7 @@ checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
 // console.log(avg1);
 // console.log(avg2);
 
-//////////////////////////////
+////////////////////////////
 // Code Challenge #3
 
 const calcAverageHumanAge = ages => 
