@@ -524,7 +524,7 @@ labelBalance.addEventListener('click', function () {
   // console.log(movementsUI);
 });
 
-// Practice Exercise
+//=========== Practice Exercise ===========
 
 const { deposit, withdrawal } = accounts
   .flatMap(mov => account.movements)
